@@ -217,9 +217,32 @@ public class PictureFragment extends BaseListFragment<FragmentPictureTestBinding
                 public void run() {
                     try {
                         Bitmap bitmap1 = Glide.with(getContext()).asBitmap()
-                                .load("https://oss.91xft.cn/x-orchard/console/common/20241129164235_iShot_2024-11-29_16.40.55.png")
-                                .submit(160,160).get();
-                        PrinterHelper.getInstance().printBitmapColorChart(bitmap1,null);
+                                .load("https://dukw2vo6v264b.cloudfront.net/testImage.png")
+                                .submit(576,1120).get();
+//                        PrinterHelper.getInstance().printBitmapColorChart(bitmap1,null);
+                        PrinterHelper.getInstance().printBitmapWithAlign(bitmap1, 1, new INeoPrinterCallback() {
+                            @Override
+                            public void onRunResult(boolean isSuccess) throws RemoteException {
+                                Log.d(TAG, " printBitmapWithAlign    onRunResult ====>    " + isSuccess);
+                            }
+
+                            @Override
+                            public void onReturnString(String result) throws RemoteException {
+                                Log.d(TAG, "  onReturnString ====>    " + result);
+                            }
+
+                            @Override
+                            public void onRaiseException(int code, String msg) throws RemoteException {
+
+                            }
+
+                            @Override
+                            public void onPrintResult(int code, String msg) throws RemoteException {
+
+                            }
+                        });
+                        PrinterHelper.getInstance().printAndFeedPaper(100);
+                        PrinterHelper.getInstance().partialCut();
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     } catch (InterruptedException e) {
